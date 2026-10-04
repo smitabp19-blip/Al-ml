@@ -1,0 +1,94 @@
+Q1: Write a program to implement Breadth First Search (BFS) for the Monkey Banana Problem.
+
+
+Python Program:
+from collections import deque
+# BFS for Monkey Banana Problem
+queue = deque(["Monkey at Door"])
+visited = set()
+while queue:
+state = queue.popleft()
+if state in visited:
+continue
+visited.add(state)
+print(state)
+if state == "Monkey at Door":
+queue.append("Monkey at Box")
+elif state == "Monkey at Box":
+queue.append("Box Under Banana")
+elif state == "Box Under Banana":
+queue.append("Monkey Climbs Box")
+elif state == "Monkey Climbs Box":
+queue.append("Monkey Gets Banana")
+elif state == "Monkey Gets Banana":
+print("Goal: Banana Obtained!")
+break
+Expected Output:
+Monkey at Door
+Monkey at Box
+Box Under Banana
+Monkey Climbs Box
+Monkey Gets Banana
+Goal: Banana Obtained!
+
+lem (CSP) approach. 
+ 
+The constraints are:
+• A ≠ B 
+• A ≠ C 
+• B ≠ D 
+• C ≠ D 
+We will use 3 colors: Red, Green, and Blue.
+Python Program :
+# Map Coloring using CSP
+# Variables
+variables = ['A', 'B', 'C', 'D']
+# Available colors
+colors = ['Red', 'Green', 'Blue']
+# Neighbours of each region
+neighbors = {
+ 'A': ['B', 'C'],
+ 'B': ['A', 'D'],
+ 'C': ['A', 'D'],
+ 'D': ['B', 'C']
+}
+# Check whether assigning a color is valid
+def is_valid(region, color, assignment):
+ for neighbour in neighbors[region]:
+ if neighbour in assignment:
+ if assignment[neighbour] == color:
+ return False
+return True
+# CSP Backtracking
+def solve(assignment):
+ # All regions are colored
+ if len(assignment) == len(variables):
+ return assignment
+ # Select an unassigned region
+ for region in variables:
+ if region not in assignment:
+ # Try each color
+ for color in colors:
+ if is_valid(region, color, assignment):
+ assignment[region] = color
+ result = solve(assignment)
+ if result:
+ return result
+ # Backtrack
+ del assignment[region]
+ return None
+# Solve the CSP
+solution = solve({})
+# Display solution
+if solution:
+ print("Map Coloring Solution:")
+ for region in variables:
+ print(region, "->", solution[region])
+else:
+ print("No solution exists.")
+Output
+Map Coloring Solution:
+A -> Red
+B -> Green
+C -> Green
+D -> Red
